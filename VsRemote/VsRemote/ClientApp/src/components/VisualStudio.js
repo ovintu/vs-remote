@@ -5,15 +5,17 @@ export class VisualStudio extends Component {
 
     constructor(props) {
         super(props);
+        this.state = { viualStudioInstances: [], loading: false };
     }
 
     componentDidMount() {
     }
 
     async getVsInstances() {
+        this.setState({ viualStudioInstances: [], loading: true });
         const response = await fetch('visualstudio');
-        const data = await response.json();
-        //this.setState({ forecasts: data, loading: false });
+        const vsInstances = await response.json();
+        this.setState({ viualStudioInstances: vsInstances, loading: false });
     }
 
     render() {

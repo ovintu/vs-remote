@@ -1,6 +1,6 @@
-﻿namespace VSRemote.Models
+﻿namespace VsRemote.Models
 {
-    public enum VSResult
+    public enum VsResult
     {
         Success,
         Fail

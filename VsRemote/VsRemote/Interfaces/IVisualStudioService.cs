@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using VSRemote.Models;
+using VsRemote.Models;
 
-namespace VSRemote.Interfaces
+namespace VsRemote.Interfaces
 {
     public interface IVisualStudioService
     {

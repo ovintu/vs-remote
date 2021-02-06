@@ -5,8 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VSRemote.Interfaces;
-using VSRemote.Models;
+using VsRemote.Models;
+using VsRemote.Interfaces;
+using System.Net.Mime;
 
 namespace VsRemote.Controllers
 {
@@ -25,18 +26,32 @@ namespace VsRemote.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<VisualStudioInstance>> GetAsync()
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> GetAsync()
         {
-            _logger.LogInformation("Get visual instances called");
-            IEnumerable<VisualStudioInstance> vsInstances = await _visualStudioService.GetRunningInstancesAsync();
-            return vsInstances;
+            try
+            {
+                _logger.LogInformation("Get visual instances called");
+                IEnumerable<VisualStudioInstance> vsInstances = await _visualStudioService.GetRunningInstancesAsync();
+                return Ok(vsInstances);
+            }
+            catch(Exception ex)
+            {
+                _logger.LogError(ex.StackTrace);
+            }
+
+            return BadRequest();
         }
 
         [HttpPost]
+        [Consumes(MediaTypeNames.Application.Json)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IAsyncResult> StartBuildAsync(string vsInstance)
         {
             await Task.Delay(1);
-            return Task.FromResult(VSResult.Success);
+            return Task.FromResult(VsResult.Success);
         }
     }
 }

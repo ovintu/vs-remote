@@ -4,8 +4,8 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using VSRemote.Interfaces;
-using VSRemote.Services;
+using VsRemote.Interfaces;
+using VsRemote.Services;
 
 namespace VsRemote
 {

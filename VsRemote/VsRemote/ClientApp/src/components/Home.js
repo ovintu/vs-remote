@@ -17,6 +17,13 @@ export class Home extends Component {
             <p>Tools/Packages used</p>
             <ul>
                 <li>Visual Studio 2019 Community edition</li>
+                <li>EnvDTE (16.7.30508.193) for visual studio control</li>
+            </ul>
+            <p>S.O.L.I.D.</p>
+            <ul>
+                <li>Single responsibility principle used throuth the project. Classes are small with only one reason to change</li>
+                <li>Decorator pattern to achive Open/Close principle</li>
+                <li>Dependency injection to achieve inversion of control</li>
             </ul>
         </div>
     );
