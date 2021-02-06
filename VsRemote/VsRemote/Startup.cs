@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using VSRemote.Interfaces;
+using VSRemote.Services;
 
 namespace VsRemote
 {
@@ -21,6 +23,8 @@ namespace VsRemote
         {
 
             services.AddControllersWithViews();
+
+            services.AddScoped<IVisualStudioService, VisualStudioService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -45,6 +49,10 @@ namespace VsRemote
             app.UseSpaStaticFiles();
 
             app.UseRouting();
+
+            //TODO Implement this with auth0 for example
+            //app.UseAuthentication();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
