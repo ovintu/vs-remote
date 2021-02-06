@@ -1,2 +1,2 @@
 # vs-remote
-Sample. Do not use!
+Sample. Do not use in production!
