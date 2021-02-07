@@ -28,12 +28,24 @@ namespace VsRemote.Services
 
         private IEnumerable<VisualStudioInstance> GetVsInstancesDetails(IEnumerable<DTE> vsInstances)
         {
-            return (vsInstances.Select(vsInstance => new VisualStudioInstance
+            int count = 0;
+            _visualStudioDtes.Clear();
+
+            var visualStudioInstances = new List<VisualStudioInstance>();
+            foreach (DTE vsInstance in vsInstances)
             {
-                VsEdition = vsInstance.Version,
-                CurrentMode = (VsMode)vsInstance.Debugger.CurrentMode,
-                SolutionLoaded = !string.IsNullOrEmpty(vsInstance.Solution.FullName)
-            })).ToList();
+                _visualStudioDtes.Add(count, vsInstance);
+                visualStudioInstances.Add(new VisualStudioInstance
+                {
+                    Id = count,
+                    VsEdition = vsInstance.Version,
+                    CurrentMode = (VsMode)vsInstance.Debugger.CurrentMode,
+                    SolutionLoaded = !string.IsNullOrEmpty(vsInstance.Solution.FullName)
+                });
+                count++;
+            }
+
+            return visualStudioInstances;
         }
 
         //https://stackoverflow.com/questions/14205933/how-do-i-get-the-dte-for-running-visual-studio-instance
@@ -67,6 +79,8 @@ namespace VsRemote.Services
                 }
             }
         }
+
+        private Dictionary<int, DTE> _visualStudioDtes = new Dictionary<int, DTE>();
 
         [DllImport("ole32.dll")]
         private static extern void CreateBindCtx(int reserved, out IBindCtx ppbc);
