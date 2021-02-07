@@ -44,7 +44,7 @@ namespace VsRemote.Services
             {
                 csFilesInTheProject.Add(new VsFile
                 {
-                    Name = dteProjectItem.FileNames[1]
+                    Name = Path.GetFileName(dteProjectItem.FileNames[1])
                 });
             }
             return csFilesInTheProject;

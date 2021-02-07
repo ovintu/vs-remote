@@ -11,7 +11,8 @@ export class VisualStudio extends Component {
         super(props);
 
         this.state = {
-            viualStudioInstances: []
+            viualStudioInstances: [],
+            solutionDetails: {}
         }
 
         this.getVsInstances = this.getVsInstances.bind(this);
@@ -35,6 +36,9 @@ export class VisualStudio extends Component {
             const response = await fetch(route);
             const serverData = await response.json();
             console.log(serverData);
+            this.setState({
+                solutionDetails: serverData
+            });
         }
     }
 
@@ -58,6 +62,11 @@ export class VisualStudio extends Component {
                         <AgGridColumn field="currentMode"></AgGridColumn>
                         <AgGridColumn field="solutionLoaded"></AgGridColumn>
                     </AgGridReact>
+                </div>
+                <div>
+                    <pre>
+                        {JSON.stringify(this.state.solutionDetails, null, 2)}
+                    </pre>
                 </div>
             </div>
         );
