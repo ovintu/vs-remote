@@ -59,16 +59,6 @@ namespace VsRemote.Services
             return VsResult.Success;
         }
 
-        private void BuildEvents_OnBuildDone(vsBuildScope Scope, vsBuildAction Action)
-        {
-            throw new NotImplementedException();
-        }
-
-        private void BuildEvents_OnBuildBegin(vsBuildScope Scope, vsBuildAction Action)
-        {
-            throw new NotImplementedException();
-        }
-
         private VsSolution GetSolutionWithChildren(DTE instance)
         {
             return _solutionParserService.ParseSolution(instance.Solution);
