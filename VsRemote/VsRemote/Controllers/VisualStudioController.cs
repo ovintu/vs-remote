@@ -43,15 +43,5 @@ namespace VsRemote.Controllers
 
             return BadRequest();
         }
-
-        [HttpPost]
-        [Consumes(MediaTypeNames.Application.Json)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IAsyncResult> StartBuildAsync(string vsInstance)
-        {
-            await Task.Delay(1);
-            return Task.FromResult(VsResult.Success);
-        }
     }
 }

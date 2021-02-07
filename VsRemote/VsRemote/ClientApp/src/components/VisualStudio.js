@@ -11,12 +11,15 @@ export class VisualStudio extends Component {
         super(props);
 
         this.state = {
+            selectedVsInstanceId: 0,
             viualStudioInstances: [],
-            solutionDetails: {}
+            solutionDetails: {},
+            currentStatus: ""
         }
 
         this.getVsInstances = this.getVsInstances.bind(this);
         this.onSelectionChanged = this.onSelectionChanged.bind(this);
+        this.buildSolution = this.buildSolution.bind(this);
     }
 
     async getVsInstances() {
@@ -28,11 +31,17 @@ export class VisualStudio extends Component {
     }
 
     async onSelectionChanged(sender) {
-        let selectedRows = sender.api.getSelectedRows();
-        let currentRow = selectedRows[0];
-        let currentMode = currentRow["currentMode"];
-        if (currentMode != "Running") {
-            var route = `/solution/${currentRow["id"]}`;
+        const selectedRows = sender.api.getSelectedRows();
+        const currentRow = selectedRows[0];
+        const currentMode = currentRow["currentMode"];
+        this.setState({ currentStatus: currentMode });
+        if (currentMode == "Running") {
+            alert("Selected solution is running. Unable to get details while solution is being run")
+        } else {
+            const id = currentRow["id"];
+            this.setState({ selectedVsInstanceId: id });
+            
+            const route = `/solution/${id}`;
             const response = await fetch(route);
             const serverData = await response.json();
             console.log(serverData);
@@ -42,13 +51,41 @@ export class VisualStudio extends Component {
         }
     }
 
+    async buildSolution() {
+        if (this.state.selectedVsInstanceId == 0) {
+            alert("select a grid row");
+        }
+
+        if (this.state.currentStatus == "Running") {
+            alert("VS selected is running");
+            return;
+        }
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+        };
+
+        //alert(this.state.selectedVsInstanceId);
+        const route = `/solution/${this.state.selectedVsInstanceId}`;
+        
+        const response = await fetch(route, requestOptions);   
+        const serverData = await response.json();
+    }
+
     render() {
         return (
             <div>
                 <h1>Visual Studio</h1>
-                <button className="btn btn-primary" onClick={this.getVsInstances}>Get Visual Studio Instances</button>
+                <table>
+                    <tr>
+                        <td><button className="btn btn-primary" onClick={this.getVsInstances}>Get Visual Studio Instances</button></td>
+                        <td><button className="btn btn-secondary" onClick={this.buildSolution}>Build</button></td>
+                    </tr>
+                </table>                
                 <div className="ag-theme-alpine" style={{ height: 200, width: 600, marginTop: 20 }}>
                     <AgGridReact
+                        displayName={true}
                         rowData={this.state.viualStudioInstances}
                         rowSelection={'single'}
                         onSelectionChanged={this.onSelectionChanged}

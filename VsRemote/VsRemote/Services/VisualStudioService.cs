@@ -7,7 +7,6 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using VsRemote.Models;
 using VsRemote.Interfaces;
-using System.IO;
 
 namespace VsRemote.Services
 {
@@ -31,6 +30,7 @@ namespace VsRemote.Services
         public async Task<VsSolution> GetSolutionDetails(int id)
         {
             await Task.Delay(1);
+            
             var vsInstances = this.GetInstances();
             if (vsInstances != null && vsInstances.Any())
             {
@@ -44,14 +44,34 @@ namespace VsRemote.Services
             return new VsSolution();
         }
 
+        public async Task<VsResult> StartBuildAsync(int id)
+        {
+            await Task.Delay(1);
+            var vsInstances = this.GetInstances();
+            if (vsInstances != null && vsInstances.Any())
+            {
+                var instance = vsInstances.FirstOrDefault(instance => instance.MainWindow.HWnd == id);
+                if (instance != null)
+                {
+                    instance.ExecuteCommand("Build.RebuildSolution", "");
+                }
+            }
+            return VsResult.Success;
+        }
+
+        private void BuildEvents_OnBuildDone(vsBuildScope Scope, vsBuildAction Action)
+        {
+            throw new NotImplementedException();
+        }
+
+        private void BuildEvents_OnBuildBegin(vsBuildScope Scope, vsBuildAction Action)
+        {
+            throw new NotImplementedException();
+        }
+
         private VsSolution GetSolutionWithChildren(DTE instance)
         {
             return _solutionParserService.ParseSolution(instance.Solution);
-        }
-
-        public void StartBuild()
-        {
-
         }
 
         private IEnumerable<VisualStudioInstance> GetVsInstancesDetails(IEnumerable<DTE> vsInstances)
@@ -108,5 +128,6 @@ namespace VsRemote.Services
 
         [DllImport("ole32.dll")]
         private static extern int GetRunningObjectTable(int reserved, out IRunningObjectTable prot);
+
     }
 }

@@ -43,5 +43,23 @@ namespace VsRemote.Controllers
                 return BadRequest(ex.StackTrace);
             }
         }
+
+        [HttpPost("{id:int}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> PostAsync(int id)
+        {
+            await Task.Delay(1);
+            try
+            {
+                var result = await _visualStudioService.StartBuildAsync(id);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex.StackTrace);
+                return BadRequest(ex.StackTrace);
+            }
+        }
     }
 }

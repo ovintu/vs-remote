@@ -1,5 +1,4 @@
-﻿using EnvDTE;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using VsRemote.Models;
 
@@ -9,6 +8,6 @@ namespace VsRemote.Interfaces
     {
         Task<IEnumerable<VisualStudioInstance>> GetRunningInstancesAsync();
         Task<VsSolution> GetSolutionDetails(int id);
-        void StartBuild();
+        Task<VsResult> StartBuildAsync(int id);
     }
 }
