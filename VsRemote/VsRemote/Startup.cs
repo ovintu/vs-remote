@@ -77,6 +77,9 @@ namespace VsRemote
                     spa.UseReactDevelopmentServer(npmScript: "start");
                 }
             });
+
+            //TODO Implement a way to capture the build process logging info
+            //app.UseSignalR("BuildOutputHub");
         }
     }
 }
