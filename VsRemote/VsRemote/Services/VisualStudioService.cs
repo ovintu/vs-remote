@@ -7,11 +7,18 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
 using VsRemote.Models;
 using VsRemote.Interfaces;
+using System.IO;
 
 namespace VsRemote.Services
 {
     public class VisualStudioService : IVisualStudioService
     {
+        private readonly ISolutionParserService _solutionParserService;
+        public VisualStudioService(ISolutionParserService solutionParserService)
+        {
+            _solutionParserService = solutionParserService;
+        }
+
         public async Task<IEnumerable<VisualStudioInstance>> GetRunningInstancesAsync()
         {
             await Task.Delay(1);
@@ -30,16 +37,16 @@ namespace VsRemote.Services
                 var instance = vsInstances.FirstOrDefault(instance => instance.MainWindow.HWnd == id);
                 if (instance != null)
                 {
-                    return this.BuildSolution(instance);
+                    return this.GetSolutionWithChildren(instance);
                 }
             }
 
             return new VsSolution();
         }
 
-        private VsSolution BuildSolution(DTE instance)
+        private VsSolution GetSolutionWithChildren(DTE instance)
         {
-            throw new NotImplementedException();
+            return _solutionParserService.ParseSolution(instance.Solution);
         }
 
         public void StartBuild()

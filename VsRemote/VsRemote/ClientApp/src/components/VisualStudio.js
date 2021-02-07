@@ -29,8 +29,13 @@ export class VisualStudio extends Component {
     async onSelectionChanged(sender) {
         let selectedRows = sender.api.getSelectedRows();
         let currentRow = selectedRows[0];
-        var route = `/solution/${currentRow["id"]}`;
-        const response = await fetch(route);
+        let currentMode = currentRow["currentMode"];
+        if (currentMode != "Running") {
+            var route = `/solution/${currentRow["id"]}`;
+            const response = await fetch(route);
+            const serverData = await response.json();
+            console.log(serverData);
+        }
     }
 
     render() {

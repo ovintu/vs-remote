@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace VsRemote.Models
 {
     public class VsSolution
     {
         public string Name { get; set; }
-        public IEnumerable<VsProject> VsProjects {get; set;}
+        public List<VsProject> VsProjects {get; set;}
     }
 }

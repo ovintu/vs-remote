@@ -25,6 +25,7 @@ namespace VsRemote
             services.AddControllersWithViews();
 
             services.AddScoped<IVisualStudioService, VisualStudioService>();
+            services.AddScoped<ISolutionParserService, SolutionParserService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
