@@ -21,6 +21,27 @@ namespace VsRemote.Services
             return new List<VisualStudioInstance>();
         }
 
+        public async Task<VsSolution> GetSolutionDetails(int id)
+        {
+            await Task.Delay(1);
+            var vsInstances = this.GetInstances();
+            if (vsInstances != null && vsInstances.Any())
+            {
+                var instance = vsInstances.FirstOrDefault(instance => instance.MainWindow.HWnd == id);
+                if (instance != null)
+                {
+                    return this.BuildSolution(instance);
+                }
+            }
+
+            return new VsSolution();
+        }
+
+        private VsSolution BuildSolution(DTE instance)
+        {
+            throw new NotImplementedException();
+        }
+
         public void StartBuild()
         {
 
@@ -28,21 +49,16 @@ namespace VsRemote.Services
 
         private IEnumerable<VisualStudioInstance> GetVsInstancesDetails(IEnumerable<DTE> vsInstances)
         {
-            int count = 0;
-            _visualStudioDtes.Clear();
-
             var visualStudioInstances = new List<VisualStudioInstance>();
             foreach (DTE vsInstance in vsInstances)
             {
-                _visualStudioDtes.Add(count, vsInstance);
                 visualStudioInstances.Add(new VisualStudioInstance
                 {
-                    Id = count,
+                    Id = vsInstance.MainWindow.HWnd,
                     VsEdition = vsInstance.Version,
                     CurrentMode = (VsMode)vsInstance.Debugger.CurrentMode,
                     SolutionLoaded = !string.IsNullOrEmpty(vsInstance.Solution.FullName)
                 });
-                count++;
             }
 
             return visualStudioInstances;
@@ -79,8 +95,6 @@ namespace VsRemote.Services
                 }
             }
         }
-
-        private Dictionary<int, DTE> _visualStudioDtes = new Dictionary<int, DTE>();
 
         [DllImport("ole32.dll")]
         private static extern void CreateBindCtx(int reserved, out IBindCtx ppbc);

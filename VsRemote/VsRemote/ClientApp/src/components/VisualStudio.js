@@ -26,12 +26,11 @@ export class VisualStudio extends Component {
         });
     }
 
-    onSelectionChanged(sender) {
+    async onSelectionChanged(sender) {
         let selectedRows = sender.api.getSelectedRows();
         let currentRow = selectedRows[0];
-        if (currentRow["currentMode"] != "Running") {
-
-        }
+        var route = `/solution/${currentRow["id"]}`;
+        const response = await fetch(route);
     }
 
     render() {
