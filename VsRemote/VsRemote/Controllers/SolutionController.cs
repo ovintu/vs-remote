@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using VsRemote.Interfaces;
 using VsRemote.Models;
@@ -34,15 +33,14 @@ namespace VsRemote.Controllers
             {
                 _logger.LogInformation("Get solution called");
                 var solutionDetails = await _visualStudioService.GetSolutionDetails(id);
-                if (solutionDetails == null) 
-                    return NotFound();
-                return Ok(solutionDetails);
+                return solutionDetails == null ? NotFound() : (IActionResult)Ok(solutionDetails);
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace);
-                return BadRequest(ex.StackTrace);
             }
+
+            return BadRequest("Opps something is wrong! Check the logs");
         }
 
         [HttpPost("{id:int}")]
@@ -50,7 +48,6 @@ namespace VsRemote.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> PostAsync(int id)
         {
-            await Task.Delay(1);
             try
             {
                 var result = await _visualStudioService.StartBuildAsync(id);
@@ -59,8 +56,9 @@ namespace VsRemote.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace);
-                return BadRequest(ex.StackTrace);
             }
+
+            return BadRequest("Opps something is wrong! Check the logs");
         }
     }
 }

@@ -5,8 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.InteropServices.ComTypes;
 using System.Threading.Tasks;
-using VsRemote.Models;
 using VsRemote.Interfaces;
+using VsRemote.Models;
 
 namespace VsRemote.Services
 {
@@ -20,6 +20,7 @@ namespace VsRemote.Services
 
         public async Task<IEnumerable<VisualStudioInstance>> GetRunningInstancesAsync()
         {
+            // Just wait here tlo suppress the warning. Production code should never do this!
             await Task.Delay(1);
             var vsInstances = this.GetInstances();
             if (vsInstances != null && vsInstances.Any())
@@ -29,8 +30,8 @@ namespace VsRemote.Services
 
         public async Task<VsSolution> GetSolutionDetails(int id)
         {
+            // Just wait here tlo suppress the warning. Production code should never do this!
             await Task.Delay(1);
-            
             var vsInstances = this.GetInstances();
             if (vsInstances != null && vsInstances.Any())
             {
@@ -46,6 +47,7 @@ namespace VsRemote.Services
 
         public async Task<VsResult> StartBuildAsync(int id)
         {
+            // Just wait here tlo suppress the warning. Production code should never do this!
             await Task.Delay(1);
             var vsInstances = this.GetInstances();
             if (vsInstances != null && vsInstances.Any())

@@ -3,11 +3,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using VsRemote.Models;
 using VsRemote.Interfaces;
-using System.Net.Mime;
+using VsRemote.Models;
 
 namespace VsRemote.Controllers
 {
@@ -36,12 +34,12 @@ namespace VsRemote.Controllers
                 IEnumerable<VisualStudioInstance> vsInstances = await _visualStudioService.GetRunningInstancesAsync();
                 return Ok(vsInstances);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex.StackTrace);
             }
 
-            return BadRequest();
+            return BadRequest("Opps something is wrong! Check the logs");
         }
     }
 }
